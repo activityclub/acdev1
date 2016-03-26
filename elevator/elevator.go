@@ -62,6 +62,14 @@ func (self *Vator) run() {
 	}
 }
 
+func passengerCreator() {
+	for {
+		p := NewPassenger("")
+		fmt.Printf("New Passenger (%s) just walked in on Floor 1.\n", p.Name)
+		time.Sleep(time.Second * time.Duration(random(0, 10)))
+	}
+}
+
 func Run() {
 	rand.Seed(time.Now().Unix())
 	var wg sync.WaitGroup
@@ -77,8 +85,6 @@ func Run() {
 	fmt.Println("Create 30 Passengers...")
 
 	for i := 0; i < 30; i++ {
-		p := NewPassenger("")
-		fmt.Println("Passenger: ", p.Name, "CurrentFloor: ", p.CurrentFloor, " DesiredFloor: ", p.DesiredFloor)
 	}
 
 	fmt.Println("Create 99 Floors...")
@@ -89,7 +95,7 @@ func Run() {
 		floors = append(floors, *f)
 	}
 
-	fmt.Println(floors)
+	go passengerCreator()
 
 	wg.Wait()
 }
