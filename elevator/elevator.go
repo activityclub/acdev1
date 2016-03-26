@@ -31,6 +31,12 @@ func random(min, max int) int {
 	return rand.Intn(max-min) + min
 }
 
+func NewFloor(number int) *Floor {
+	f := Floor{}
+	f.Number = number
+	return &f
+}
+
 func NewPassenger(name string) *Passenger {
 	p := Passenger{}
 	p.Name = fake.FirstName() + " " + fake.LastName()
@@ -74,6 +80,16 @@ func Run() {
 		p := NewPassenger("")
 		fmt.Println("Passenger: ", p.Name, "CurrentFloor: ", p.CurrentFloor, " DesiredFloor: ", p.DesiredFloor)
 	}
+
+	fmt.Println("Create 99 Floors...")
+
+	floors := make([]Floor, 0)
+	for i := 1; i < 100; i++ {
+		f := NewFloor(i)
+		floors = append(floors, *f)
+	}
+
+	fmt.Println(floors)
 
 	wg.Wait()
 }
