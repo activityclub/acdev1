@@ -55,7 +55,7 @@ func NewVator(number int) *Vator {
 	return &v
 }
 
-func (self *Vator) run() {
+func (self *Vator) run(floors []*Floor) {
 	for {
 		fmt.Println("Vator ", self.Number, " CurrentFloor: ", self.CurrentFloor)
 		time.Sleep(time.Second * 5)
@@ -85,22 +85,22 @@ func Run() {
 	var wg sync.WaitGroup
 
 	wg.Add(1)
+
+	fmt.Println("Create 99 Floors...")
+
+	floors := make([]*Floor, 0)
+	for i := 1; i < 100; i++ {
+		f := NewFloor(i)
+		floors = append(floors, f)
+	}
+
 	fmt.Println("Create 3 Elevators...")
 
 	for i := 1; i < 4; i++ {
 		v := NewVator(i)
-		go v.run()
+		go v.run(floors)
 	}
-
-	fmt.Println("Create 99 Floors...")
-
-	floors := make([]Floor, 0)
-	for i := 1; i < 100; i++ {
-		f := NewFloor(i)
-		floors = append(floors, *f)
-	}
-
-	go passengerCreator(&floors[0])
+	go passengerCreator(floors[0])
 
 	wg.Wait()
 }
