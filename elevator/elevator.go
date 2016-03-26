@@ -2,6 +2,7 @@ package elevator
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
@@ -29,6 +30,9 @@ func (self *Vator) run() {
 }
 
 func Run() {
+	var wg sync.WaitGroup
+
+	wg.Add(1)
 	fmt.Println("Create 3 Elevators...")
 
 	i := 1
@@ -43,4 +47,6 @@ func Run() {
 		i++
 
 	}
+
+	wg.Wait()
 }
