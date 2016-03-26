@@ -2,6 +2,7 @@ package elevator
 
 import (
 	"fmt"
+	"math/rand"
 	"sync"
 	"time"
 )
@@ -11,6 +12,26 @@ type Vator struct {
 	CurrentFloor int
 	NextFloor    int
 	Passengers   int
+}
+
+type Passenger struct {
+	Name         string
+	CurrentFloor int
+	DesiredFloor int
+}
+
+func random(min, max int) int {
+	rand.Seed(time.Now().Unix())
+	return rand.Intn(max-min) + min
+}
+
+func NewPassenger(name string) *Passenger {
+	p := Passenger{}
+	p.Name = "John Smith"
+	p.CurrentFloor = random(1, 99)
+	p.DesiredFloor = random(1, 99)
+
+	return &p
 }
 
 func NewVator(number int) *Vator {
@@ -43,6 +64,21 @@ func Run() {
 
 		v := NewVator(i)
 		go v.run()
+
+		i++
+
+	}
+
+	fmt.Println("Create 30 Passengers...")
+
+	i = 0
+	for {
+		if i > 30 {
+			break
+		}
+
+		p := NewPassenger("")
+		fmt.Println("Passenger: ", p.Name)
 
 		i++
 
