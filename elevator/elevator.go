@@ -62,10 +62,20 @@ func (self *Vator) run() {
 	}
 }
 
-func passengerCreator() {
+func (self *Floor) upButton() {
+	if self.WantUp {
+		return
+	}
+	fmt.Printf("  UP button on Floor %d pushed,\n", self.Number)
+	self.WantUp = true
+}
+
+func passengerCreator(floor1 *Floor) {
 	for {
 		p := NewPassenger("")
 		fmt.Printf("New Passenger (%s) just walked in on Floor 1.\n", p.Name)
+		fmt.Printf("  They want to be on Floor %d \n", p.DesiredFloor)
+		floor1.upButton()
 		time.Sleep(time.Second * time.Duration(random(0, 10)))
 	}
 }
@@ -82,11 +92,6 @@ func Run() {
 		go v.run()
 	}
 
-	fmt.Println("Create 30 Passengers...")
-
-	for i := 0; i < 30; i++ {
-	}
-
 	fmt.Println("Create 99 Floors...")
 
 	floors := make([]Floor, 0)
@@ -95,7 +100,7 @@ func Run() {
 		floors = append(floors, *f)
 	}
 
-	go passengerCreator()
+	go passengerCreator(&floors[0])
 
 	wg.Wait()
 }
