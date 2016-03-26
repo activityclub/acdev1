@@ -21,7 +21,6 @@ type Passenger struct {
 }
 
 func random(min, max int) int {
-	rand.Seed(time.Now().Unix())
 	return rand.Intn(max-min) + min
 }
 
@@ -45,12 +44,13 @@ func NewVator(number int) *Vator {
 
 func (self *Vator) run() {
 	for {
-		fmt.Println("Vator ", self.Number)
+		fmt.Println("Vator ", self.Number, " CurrentFloor: ", self.CurrentFloor)
 		time.Sleep(time.Second * 5)
 	}
 }
 
 func Run() {
+	rand.Seed(time.Now().Unix())
 	var wg sync.WaitGroup
 
 	wg.Add(1)
@@ -78,7 +78,7 @@ func Run() {
 		}
 
 		p := NewPassenger("")
-		fmt.Println("Passenger: ", p.Name)
+		fmt.Println("Passenger: ", p.Name, "CurrentFloor: ", p.CurrentFloor, " DesiredFloor: ", p.DesiredFloor)
 
 		i++
 
