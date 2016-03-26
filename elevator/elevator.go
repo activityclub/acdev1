@@ -2,6 +2,7 @@ package elevator
 
 import (
 	"fmt"
+	"github.com/icrowley/fake"
 	"math/rand"
 	"sync"
 	"time"
@@ -20,14 +21,20 @@ type Passenger struct {
 	DesiredFloor int
 }
 
+type Floor struct {
+	Number   int
+	WantUp   bool
+	WantDown bool
+}
+
 func random(min, max int) int {
 	return rand.Intn(max-min) + min
 }
 
 func NewPassenger(name string) *Passenger {
 	p := Passenger{}
-	p.Name = "John Smith"
-	p.CurrentFloor = random(1, 99)
+	p.Name = fake.FirstName() + " " + fake.LastName()
+	p.CurrentFloor = 1
 	p.DesiredFloor = random(1, 99)
 
 	return &p
@@ -56,32 +63,16 @@ func Run() {
 	wg.Add(1)
 	fmt.Println("Create 3 Elevators...")
 
-	i := 1
-	for {
-		if i > 3 {
-			break
-		}
-
+	for i := 1; i < 4; i++ {
 		v := NewVator(i)
 		go v.run()
-
-		i++
-
 	}
 
 	fmt.Println("Create 30 Passengers...")
 
-	i = 0
-	for {
-		if i > 30 {
-			break
-		}
-
+	for i := 0; i < 30; i++ {
 		p := NewPassenger("")
 		fmt.Println("Passenger: ", p.Name, "CurrentFloor: ", p.CurrentFloor, " DesiredFloor: ", p.DesiredFloor)
-
-		i++
-
 	}
 
 	wg.Wait()
